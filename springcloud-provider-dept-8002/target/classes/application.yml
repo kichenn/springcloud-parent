@@ -1,0 +1,56 @@
+server:
+  port: 8002
+  servlet:
+    context-path: /provider
+
+mybatis:
+  #config-location: classpath:mybatis/mybatis.cfg.xml       # mybatis配置文件所在路径
+  type-aliases-package: com.hzit.api.entity                 # 所有Entity别名类所在包
+
+
+spring:
+  application:
+   name: springcloud-dept						#微服务最重要的是取名字！微服务对外暴露的名字
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver              # mysql驱动包
+    url: jdbc:mysql://localhost:3306/test09_2             # 数据库名称
+    username: root
+    password: root
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+logging:
+  level:
+    com.hzit.provider.mapper: debug
+
+# eureka服务注册
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      # eureka单机版
+      # defaultZone: http://localhost:7001/eureka  # eureka注册中心的地址  表示将当前应用(springcloud-dept)注册到(eureka-server)
+      # eureka集群版
+      defaultZone: http://eureka7003.com:7003/eureka,http://eureka7002.com:7002/eureka,http://eureka7001.com:7001/eureka # eureka注册中心的地址  表示将当前应用(springcloud-dept)注册到(eureka-server)
+  instance:
+    instance-id: springcloud-dept02   #修改别名
+    prefer-ip-address: true
+
+# info信息  非必须
+info:
+  app.name: springcloud-dept02
+  company.name: com.hzit
+  build.artifactId: springcloud-provider-dept-8002$
+  build.version: 1.0-SNAPSHOT$
+
+#配置hystris监控中心 解决访问404
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
